@@ -5,22 +5,25 @@
 class ResourceManager
 {
     // Twoja implementacja tutaj
-    private:
-    Resource resource;
-
     public:
-    ResourceManager() : resource() {}
+    ResourceManager() : resource_(new Resource()) { }
 
-    double get() { return resource.get(); }
+    ResourceManager(const ResourceManager& other) : resource_(new Resource(*other.resource_)) { }
 
-    ResourceManager(const ResourceManager& other) : resource(other.resource) {}
+    ~ResourceManager() { delete resource_; }
 
-    ResourceManager& operator=(const ResourceManager& other) {
-        if (this != &other) {
-            resource = other.resource;
-        }
-        return *this;
+    double get() const{
+        return resource_->get();
     }
 
-    ~ResourceManager() { }
+    ResourceManager& operator=(const ResourceManager& other){
+        if(this != &other){
+            delete resource_;
+            resource_ = new Resource(*other.resource_);
+        }
+        return *this;
+    } 
+
+    private:
+    Resource* resource_;
 };
