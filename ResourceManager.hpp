@@ -24,6 +24,20 @@ class ResourceManager
         return *this;
     } 
 
+    // Przenoszenie
+    ResourceManager(ResourceManager&& other) noexcept : resource_(other.resource_){
+        other.resource_ = nullptr;
+    }
+
+    ResourceManager& operator=(ResourceManager&& other) noexcept{
+        if(this!=&other){
+            delete resource_;
+            resource_ = other.resource_;
+            other.resource_ = nullptr;
+        }
+        return *this;
+    }
+
     private:
     Resource* resource_;
 };
